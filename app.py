@@ -132,6 +132,20 @@ def actualizar_estado_pedido(pedido_id):
         return jsonify({"mensaje": "Pedido no encontrado"}), 404
     
 
+@app.cli.command('clear_db')
+def clear_database():
+    """Elimina todos los registros de la base de datos."""
+    try:
+        # Eliminar todos los registros de cada tabla
+        num_rows_deleted = db.session.query(Pedido).delete()
+        # Aquí puedes añadir más líneas si tienes otras tablas
+        db.session.commit()
+        print(f"Registros eliminados: {num_rows_deleted}")
+    except Exception as e:
+        print(f"Error al eliminar registros: {e}")
+        db.session.rollback()
+    
+
 if __name__ == '__main__':
     app.run(debug=True)
 
